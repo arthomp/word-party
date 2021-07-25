@@ -23,6 +23,7 @@ const WordForm = ({ category, setCategory, word, setWord, handleEventClick }) =>
   const randomEvent = () => {
     const randomWord = generateRandomWord();
     setWord(randomWord);
+    setCategory("defi");
     handleEventClick(randomWord);
   };
 
@@ -47,9 +48,7 @@ const WordForm = ({ category, setCategory, word, setWord, handleEventClick }) =>
             className="search"
             label="Enter a Word"
             value={word}
-            onChange={(e) => {
-              setWord(e.target.value);
-            }}
+            onChange={(e) => setWord(e.target.value)}
           />
           <TextField
             className="ddselect"

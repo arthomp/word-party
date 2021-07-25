@@ -9,16 +9,33 @@ function App() {
 
   const [word, setWord] = useState("");
   const [definitions, setDefinitions] = useState([]);
+  const [synonyms, setSynonyms] = useState([]);
   const [category, setCategory] = useState("defi");
-  const [dictUrl, setDictUrl] = useState("");
+  const [dictionaryUrl, setDictionaryUrl] = useState("");
+  const [thesaurusUrl, setThesaurusUrl] = useState("");
   const [eventClicked, setEventClicked] = useState(false);
 
+  // replace ??? with appropriate API key from https://dictionaryapi.com/
+  const dictionaryApiKey = "???";
+  const thesaurusApiKey =  "???";
+  
   const handleEventClick = (keyword) => {
     if(keyword !== "") {
       setEventClicked(true);
-      // replace ??? with your API key if you are trying to run this locally
-      const dictionaryApi = `https://dictionaryapi.com/api/v3/references/collegiate/json/${keyword}?key=???`;
-      setDictUrl(dictionaryApi);
+      switch(category) {
+        case 'defi':
+          setDictionaryUrl(`https://dictionaryapi.com/api/v3/references/collegiate/json/${keyword}?key=${dictionaryApiKey}`);
+          break;
+        case 'syno':
+          setThesaurusUrl(`https://dictionaryapi.com/api/v3/references/thesaurus/json/${keyword}?key=${thesaurusApiKey}`);
+          break;
+        case 'both':
+          setDictionaryUrl(`https://dictionaryapi.com/api/v3/references/collegiate/json/${keyword}?key=${dictionaryApiKey}`);
+          setThesaurusUrl(`https://dictionaryapi.com/api/v3/references/thesaurus/json/${keyword}?key=${thesaurusApiKey}`);
+          break;
+        default:
+          console.log("Error: unrecognized category - expected (defi/syno/both) actual: " + category);
+      }
     }
   };
 
@@ -38,9 +55,13 @@ function App() {
         <DataLoader 
           word={word}
           setWord={setWord}
+          category={category}
           definitions={definitions}
           setDefinitions={setDefinitions}
-          dictUrl={dictUrl}
+          synonyms={synonyms}
+          setSynonyms={setSynonyms}
+          dictionaryUrl={dictionaryUrl}
+          thesaurusUrl={thesaurusUrl}
           eventClicked={eventClicked}
           setEventClicked={setEventClicked}
           handleEventClick={handleEventClick}

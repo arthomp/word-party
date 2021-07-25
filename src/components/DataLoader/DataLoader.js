@@ -8,7 +8,7 @@ function checkTypes(arr) {
     }
 }
 
-const DataLoader = ({word, setWord, definitions, setDefinitions, dictUrl, eventClicked, setEventClicked, handleEventClick}) => {
+const DataLoader = ({word, setWord, category, definitions, setDefinitions, synonyms, setSynonyms, dictionaryUrl, thesaurusUrl, eventClicked, setEventClicked, handleEventClick}) => {
 
     function handleWordClick(event) {
         setWord(event.target.innerText);
@@ -16,19 +16,39 @@ const DataLoader = ({word, setWord, definitions, setDefinitions, dictUrl, eventC
     }
 
     useEffect(() => {
+        
         const dictApiCall = async () => {
             try {
-              const data = await axios.get(dictUrl);
+              const data = await axios.get(dictionaryUrl);
               setDefinitions(data.data);
             } catch(err) {
               console.log(err);
             } 
         }
+
+        const thesaurusApiCall = async () => {
+            try {
+                const data = await axios.get(thesaurusUrl);
+                setSynonyms(data.data);
+            } catch (err) {
+                console.log(err);
+            }
+        }
+
         if(eventClicked){
             setEventClicked(false);
-            dictApiCall();
+            if(category === "defi") {
+                dictApiCall();
+                setSynonyms([]);
+            } else if (category === "syno") {
+                thesaurusApiCall();
+                setDefinitions([]);
+            } else {
+                dictApiCall();
+                thesaurusApiCall();
+            }
         }
-    }, [dictUrl, eventClicked, setEventClicked, setDefinitions]);
+    }, [dictionaryUrl, thesaurusUrl, eventClicked, setEventClicked, setDefinitions, setSynonyms, category]);
 
     return (
         <div className="data-wrapper">
@@ -49,6 +69,24 @@ const DataLoader = ({word, setWord, definitions, setDefinitions, dictUrl, eventC
                 <div className="data-container">
                     <span className='data-helper-text'>Did you mean...</span>
                     { definitions.map((element, index) => (
+                        <span className="data-suggestion" key={index} onClick={handleWordClick} >{element}</span>
+                    ))}  
+                </div>
+            )}
+            { synonyms && !!synonyms.length && !checkTypes(synonyms) && word && (
+                <div className="data-container">
+                    <span className="data-synonym-text">Synonyms:</span>
+                    { synonyms[0].def[0].sseq[0][0][1].syn_list && (
+                        synonyms[0].def[0].sseq[0][0][1].syn_list[0].map((element, index) => (
+                            <span className="data-synonym" key={index} onClick={handleWordClick}>{element.wd}</span>
+                        ))
+                    )}
+                </div>
+            )}
+            { synonyms && !!synonyms.length && checkTypes(synonyms) && word && (
+                <div className="data-container">
+                    <span className='data-helper-text'>Did you mean...</span>
+                    { synonyms.map((element, index) => (
                         <span className="data-suggestion" key={index} onClick={handleWordClick} >{element}</span>
                     ))}  
                 </div>
