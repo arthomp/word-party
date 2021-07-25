@@ -1,0 +1,16 @@
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    flex-direction: column;
+    height: 20vh;
+    width: 100%;
+
+    & > div {
+        font-size: 6vw;
+        text-transform: uppercase;
+        font-family: "Montserrat", sans-serif;
+        font-weight: 100;
+    }
+
+}

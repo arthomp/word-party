@@ -1,0 +1,57 @@
+$font-primary: #4DA8DA;
+$font-secondary: white;
+$font-teritiary: #007CC7;
+$font-family: "Montserrat", sans-serif;
+
+.data-wrapper {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    padding: 20px 0;
+    
+    .data-container {
+        width: 50%;
+        font-family: $font-family;
+
+        & > span {
+            margin-right: 8px;
+        }
+
+        .data-pos {
+            color: $font-primary;
+            font-size: 48px;
+            font-weight: 100;
+        }
+        
+        .data-pronunciation {
+            color: $font-teritiary;
+            font-size: 30px;
+            font-weight: 700;
+        }
+
+        .data-definition {
+            color: $font-secondary;
+            font-size: 18px;
+            font-weight: 400;
+        }
+        
+        .data-helper-text {
+            color: $font-secondary;
+            font-size: 30px;
+            font-weight: 100;
+        }
+
+        .data-suggestion {
+            color: $font-primary;
+            font-size: 18px;
+            font-weight: 400;
+            display: inline-block;
+            cursor: pointer;
+            transition: color .5s;
+            
+            &:hover {
+                color: $font-secondary;
+            }
+        }
+    }
+}
