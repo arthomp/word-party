@@ -2,12 +2,6 @@ import axios from "axios";
 import { useEffect } from "react";
 import "./DataLoader.scss";
 
-function checkTypes(arr) {
-    if(Array.isArray(arr)) {
-        return arr.every(i => (typeof i === "string"));
-    }
-}
-
 const DataLoader = ({word, setWord, category, definitions, setDefinitions, synonyms, setSynonyms, dictionaryUrl, thesaurusUrl, eventClicked, setEventClicked, handleEventClick}) => {
 
     function handleWordClick(event) {
@@ -15,12 +9,19 @@ const DataLoader = ({word, setWord, category, definitions, setDefinitions, synon
         handleEventClick(event.target.innerText);
     }
 
+    function checkTypes(arr) {
+        if(Array.isArray(arr)) {
+            return arr.every(i => (typeof i === "string"));
+        }
+    }
+
     useEffect(() => {
-        
+
         const dictApiCall = async () => {
             try {
               const data = await axios.get(dictionaryUrl);
               setDefinitions(data.data);
+              console.log(data.data);
             } catch(err) {
               console.log(err);
             } 
@@ -52,10 +53,11 @@ const DataLoader = ({word, setWord, category, definitions, setDefinitions, synon
 
     return (
         <div className="data-wrapper">
+
             { definitions && !!definitions.length && !checkTypes(definitions) && word && (
                 <div className="data-container">
                     { definitions[0].fl && (
-                        <span className="data-pos">{definitions[0].fl}</span>
+                        <span className="data-pos">({definitions[0].fl})</span>
                     )}
                     { definitions[0].hwi.prs && (
                         <span className="data-pronunciation">{definitions[0].hwi.prs[0].mw}</span>
@@ -65,6 +67,20 @@ const DataLoader = ({word, setWord, category, definitions, setDefinitions, synon
                     )}
                 </div>
             )}
+
+            { synonyms && !!synonyms.length && !checkTypes(synonyms) && word && (
+                <div className="data-container">
+                    <span className="data-synonym-text">Synonyms.</span>
+                    { synonyms[0].meta.syns && (
+                        synonyms[0].meta.syns.map((subArr) => (
+                            subArr.map((element, index) => (
+                                <span className="data-synonym" key={index} onClick={handleWordClick}>{element}</span>
+                            ))
+                        ))
+                    )}
+                </div>
+            )}
+            
             { definitions && !!definitions.length && checkTypes(definitions) && word && (
                 <div className="data-container">
                     <span className='data-helper-text'>Did you mean...</span>
@@ -73,17 +89,8 @@ const DataLoader = ({word, setWord, category, definitions, setDefinitions, synon
                     ))}  
                 </div>
             )}
-            { synonyms && !!synonyms.length && !checkTypes(synonyms) && word && (
-                <div className="data-container">
-                    <span className="data-synonym-text">Synonyms:</span>
-                    { synonyms[0].def[0].sseq[0][0][1].syn_list && (
-                        synonyms[0].def[0].sseq[0][0][1].syn_list[0].map((element, index) => (
-                            <span className="data-synonym" key={index} onClick={handleWordClick}>{element.wd}</span>
-                        ))
-                    )}
-                </div>
-            )}
-            { synonyms && !!synonyms.length && checkTypes(synonyms) && word && (
+            
+            { synonyms && !!synonyms.length && checkTypes(synonyms) && !checkTypes(definitions) && word && (
                 <div className="data-container">
                     <span className='data-helper-text'>Did you mean...</span>
                     { synonyms.map((element, index) => (
@@ -91,6 +98,7 @@ const DataLoader = ({word, setWord, category, definitions, setDefinitions, synon
                     ))}  
                 </div>
             )}
+            
         </div>
     );
 };

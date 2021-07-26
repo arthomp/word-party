@@ -15,7 +15,7 @@ function App() {
   const [thesaurusUrl, setThesaurusUrl] = useState("");
   const [eventClicked, setEventClicked] = useState(false);
 
-  // replace ??? with appropriate API key from https://dictionaryapi.com/
+  // replace ??? with API key for dictionaryapi.com
   const dictionaryApiKey = "???";
   const thesaurusApiKey =  "???";
   
@@ -44,6 +44,8 @@ function App() {
       <Container maxWidth="md">
         <Header word={word}/>
         <WordForm 
+          setDefinitions={setDefinitions}
+          setSynonyms={setSynonyms}
           category={category}
           setCategory={setCategory}
           word={word}

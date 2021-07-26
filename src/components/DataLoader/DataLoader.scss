@@ -1,6 +1,9 @@
-$font-primary: #4DA8DA;
-$font-secondary: white;
-$font-teritiary: #007CC7;
+$blue: #007CC7;
+$light-blue: #4DA8DA;
+$white: white;
+$purple: #8227fa;
+$light-purple: #ba8fff;
+
 $font-family: "Montserrat", sans-serif;
 
 .data-wrapper {
@@ -23,31 +26,31 @@ $font-family: "Montserrat", sans-serif;
         }
 
         .data-pos {
-            color: $font-primary;
+            color: $light-blue;
             font-size: 48px;
             font-weight: 100;
         }
         
         .data-pronunciation {
-            color: $font-teritiary;
+            color: $blue;
             font-size: 30px;
             font-weight: 700;
         }
 
         .data-definition {
-            color: $font-secondary;
+            color: $white;
             font-size: 18px;
             font-weight: 400;
         }
         
         .data-helper-text {
-            color: $font-secondary;
+            color: $white;
             font-size: 30px;
             font-weight: 100;
         }
 
         .data-suggestion {
-            color: $font-primary;
+            color: $light-blue;
             font-size: 18px;
             font-weight: 400;
             display: inline-block;
@@ -55,26 +58,33 @@ $font-family: "Montserrat", sans-serif;
             transition: color .5s;
             
             &:hover {
-                color: $font-secondary;
+                color: $white;
             }
         }
 
         .data-synonym-text {
-            color: $font-primary;
-            font-size: 30px;
-            font-weight: 400;
+            color: $purple;
+            font-size: 40px;
+            font-weight: 700;
         }
 
         .data-synonym {
-            color: $font-secondary;
             font-size: 18px;
             font-weight: 400;
             display: inline-block;
             cursor: pointer;
             transition: color .5s;
 
+            &:nth-child(odd) {
+                color: $white;
+            }
+
+            &:nth-child(even) {
+                color: $light-purple
+            }
+
             &:hover {
-                color: $font-teritiary;
+                color: $purple;
             }
         }
     }

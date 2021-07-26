@@ -8,7 +8,7 @@ import {
 import { useEffect, useState } from "react";
 import "./WordForm.scss";
 
-const WordForm = ({ category, setCategory, word, setWord, handleEventClick }) => {
+const WordForm = ({ setDefinitions, setSynonyms, category, setCategory, word, setWord, handleEventClick }) => {
 
   const [btnDisabled, setBtnDisabled] = useState(false);
 
@@ -23,7 +23,6 @@ const WordForm = ({ category, setCategory, word, setWord, handleEventClick }) =>
   const randomEvent = () => {
     const randomWord = generateRandomWord();
     setWord(randomWord);
-    setCategory("defi");
     handleEventClick(randomWord);
   };
 
@@ -37,8 +36,15 @@ const WordForm = ({ category, setCategory, word, setWord, handleEventClick }) =>
   });
 
   useEffect(() => {
+    if(word.length > 0) {
+      setBtnDisabled(false);
+    } else {
+      setBtnDisabled(true);
+      setDefinitions([]);
+      setSynonyms([]);
+    }
     word.length > 0 ? setBtnDisabled(false) : setBtnDisabled(true);
-  }, [word]);
+  }, [word, setDefinitions, setSynonyms]);
 
   return (
     <div className="form-container">
@@ -71,7 +77,7 @@ const WordForm = ({ category, setCategory, word, setWord, handleEventClick }) =>
             className="search-button" 
             size="large" 
             disabled={btnDisabled}
-            onClick={() =>  {handleEventClick(word) }}
+            onClick={() => {handleEventClick(word)}}
           > Search </Button>
           <Button 
             variant="contained" 
